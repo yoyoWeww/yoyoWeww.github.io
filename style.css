@@ -2,13 +2,28 @@ h2{
     color: red;
     text-align: center;
 }
-.head div{
+a{
+    text-decoration: none;
+}
+.inner{
+    width: 500px;
+   margin: 0 auto;   
+}
+.inner  a h1{
+    height: 50px;
+    /* width: 50px; */
+    background-color: pink;
+    text-align: center;
+}
+.head ul li{
     width: 100px;
     height: 50px;
     background-color: aqua;
     display: inline-block;
     line-height: 50px;
     text-align: center;
+    border-radius: 20px;
+    
 }
 
 .head{
@@ -16,3 +31,8 @@ h2{
     height: 500px;
     margin: 0 auto;
 }
+
+.head div {
+    
+}
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .box {
+            width: 1200px;
+            height: 462px;
+            margin: 150px auto;
+            padding: 4px;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 300px;
+            
+        }
+
+        .box1 {
+            display: block;
+            
+        }
+
+        .box .slide {
+            width: 206px;
+            float: left;
+            cursor: pointer;
+            transition: 1.5s;
+            
+        }
+
+        .box .on {
+            width: 570px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1"><img src="./images/bg.jpg" alt="">
+        <div class="box">
+
+            <div class="slide on"><img src="images/1.jpg" />
+            <p> 你好啊啊啊啊啊啊啊啊啊啊 </p></div>
+
+            <div class="slide"><img src="images/2.jpg" /></div>
+
+            <div class="slide"><img src="images/3.jpg" /></div>
+
+            <div class="slide"><img src="images/4.jpg" /></div>
+
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $(".slide").hover(function () {
+                $(this).stop().addClass("on").siblings().removeClass("on");
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>

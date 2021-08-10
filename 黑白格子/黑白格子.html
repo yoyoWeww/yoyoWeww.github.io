@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #score{
+            margin-top: 44px;
+            margin-left: 50px;
+        }
+        .box{
+            width: 400px;
+            height: 400px;
+            border:1px solid blue;
+            margin-left: 50px;
+            margin-top: 50px;
+            /* 父相 */
+            position: relative;
+            /* 溢出隐藏 */
+            overflow: hidden;
+        }
+        .box .game{
+            /* 子绝 */
+            position: absolute;
+            top: -50px;
+            left: 0;
+        }
+        .box .game .row {
+            overflow: hidden;
+        }
+        .box .game .row div{
+            width: 98px;
+            height: 98px;
+            border:1px solid gray;
+            float: left;
+        }
+        .box .game .row .black{
+            background: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- 统计分数的文本框 -->
+    <input type="text" id="score" value="0" disabled="disabled"/>
+
+    <!-- .box大盒子 -->
+    <div class="box">
+        <!-- .game游戏区域 -->
+        <div class="game">
+            <!-- .row行 -->
+            <!-- .black表示黑块 -->
+            <div class="row">
+                <div class="black"></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="row">
+                <div></div>
+                <div class="black"></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="row">
+                <div></div>
+                <div></div>
+                <div class="black"></div>
+                <div></div>
+            </div>
+            <div class="row">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div class="black"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       function Game(){
+           this.gameDom = document.querySelector(".game");
+           this.speed = 1;
+           
+           this.score = 0;
+           this.scoreInput = document.querySelector("#score")
+           this.timer = null;
+           this.isOver = false;
+           this.init();
+       }
+       // 游戏区域下落方法
+       Game.prototype.moveDown = function(){
+           var that = this;
+        
+           this.timer = window.setInterval(function(){
+                 that.gameDom.style.top = that.gameDom.offsetTop + that.speed + "px";
+                 
+                 if( that.gameDom.offsetTop >= 0){
+                     that.createRow();
+                     that.removeRow();
+                     that.isTouchBottom();
+                 }
+           },20)
+
+       }
+       Game.prototype.createRow =function(){
+           var newRow = document.createElement("div");
+           newRow.className = "row";
+           var randomNum = Math.floor( Math.random()*(4-1+1)+1 );
+
+           for(var i = 1; i<= 4; i++){
+               var newCol = document.createElement("div");
+               if( i == randomNum){
+                   newCol.classList.add("black");
+               }
+               newRow.appendChild(newCol);
+           }
+           this.gameDom.insertBefore(newRow, this.gameDom.firstElementChild)
+           this.gameDom.style.top = "-100px";
+       }
+       Game.prototype.removeRow = function(){
+        if(this.gameDom.children.length > 5 ){
+            this.gameDom.lastElementChild.remove();
+        }   
+
+
+       }
+       Game.prototype.handleClick = function(){
+           var that = this;
+           this.gameDom.onclick = function( e ){
+            e = e || window.event;
+            if(that.isOver){
+                alert("游戏已经结束，请刷新页面重新开始！")
+            }
+            else{
+                if(e.target.classList.contains("black")){
+                    e.target.classList.remove("black")
+                    that.score++;
+                    that.scoreInput.value = that.score;
+                    e.target.parentNode.setAttribute("data-pass","已经点击")
+                    if(that.score % 5 == 0 ){
+                        that.speed++;
+                    }
+
+                }
+                else{
+                    alert("游戏结束")
+                    window.clearInterval( that.timer );
+                    that.isOver = true;
+
+                }
+            }
+           }
+       }
+       Game.prototype.isTouchBottom = function(){
+            if( this.gameDom.lastElementChild.getAttribute("data-pass") === null ){
+                alert("游戏结束");
+                // 清除定时器
+                window.clearInterval( this.timer );
+                // 改变游戏状态
+                this.isOver = true;
+            }
+        }
+       Game.prototype.init = function(){
+           this.moveDown();
+           this.handleClick();
+
+       }
+       new Game();
+
+
+    </script>
+</body>
+</html>
